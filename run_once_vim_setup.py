@@ -1,13 +1,13 @@
 #!/bin/python3
-from os import system,environ
+import os 
 
-curUser = environ.get('USER')
+curUser = name = os.popen('whoami').read() 
 print(curUser)
 
-system("source ~/.bashrc")
+os.system("source ~/.bashrc")
 if(curUser == 'root'):
-    system("apt update && apt upgrade -y")
-    system("apt install -y vim git")
+    os.system("apt update && apt upgrade -y")
+    os.system("apt install -y vim git")
 else:
-    system("sudo apt update && sudo apt upgrade -y")
-    system("sudo apt install -y vim git")
+    os.system("sudo apt update && sudo apt upgrade -y")
+    os.system("sudo apt install -y vim git")
