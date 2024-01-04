@@ -33,4 +33,28 @@ add_google_chrome_repository() {
     return $?
 }
 
+ask_to_install_docker() {
+    local question="Install Docker"
+    local useSudo=$1
+
+    read -p "$question (y/n): " response
+
+    # Check the user's response
+    case "$response" in
+        [yY]|[yY][eE][sS])
+            curl -fsSL https://get.docker.com -o get-docker.sh
+            chmod +x get-docker.sh
+            $useSudo ./get-docker.sh
+            ;;
+        [nN]|[nN][oO])
+            echo "Okk.. Not installing docker"
+            ;;
+        *)
+            echo "Invalid response. Please enter 'y' for Yes or 'n' for No."
+            ;;
+    esac
+}
+
+ask_to_install_docker "$useSudo"
+
 add_google_chrome_repository "$useSudo"
