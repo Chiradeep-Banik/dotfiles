@@ -21,7 +21,9 @@ vim_setup() {
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     vim -es -u ~/.vimrc +PlugInstall +qa
 }
+
 updg $useSudo
 
-vim_setup
+$useSudo echo "185.199.108.133 raw.githubusercontent.com" >> /etc/hosts 
 
+vim_setup
