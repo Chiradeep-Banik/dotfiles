@@ -4,6 +4,9 @@ useSudo='sudo';
 
 if [ "$(id -u)" -eq 0 ]; then
     useSudo=''
+    source "/root/.bashrc"
+else
+    source "/home/$(whoami)/.bashrc"
 fi
 
 updg() {
@@ -26,4 +29,3 @@ else
     echo "Failed to install"
 fi
 
-source ~/.bashrc
