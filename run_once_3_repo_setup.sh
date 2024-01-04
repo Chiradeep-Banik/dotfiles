@@ -43,8 +43,9 @@ ask_to_install_docker() {
     case "$response" in
         [yY]|[yY][eE][sS])
             curl -fsSL https://get.docker.com -o get-docker.sh
-            chmod +x get-docker.sh
+            $useSudo chmod +x get-docker.sh
             $useSudo ./get-docker.sh
+            $useSudo rm -f get-docker.sh
             ;;
         [nN]|[nN][oO])
             echo "Okk.. Not installing docker"

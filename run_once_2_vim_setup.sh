@@ -24,3 +24,4 @@ vim_setup() {
 updg $useSudo
 
 vim_setup
+

@@ -18,7 +18,7 @@ updg() {
 
 updg $useSudo
 
-$useSudo apt-get install -y git vim curl wget > /dev/null
+$useSudo apt-get install -y git vim curl wget apt-utils > /dev/null
 
 if [ $? -eq 0 ]; then
     echo "Installed successfully"
