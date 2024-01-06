@@ -1,0 +1,9 @@
+[user]
+	email = chiradeep13@gmail.com
+	name = Banik
+[core]
+	editor = vim
+	autocrlf = input
+	pager = diff-so-fancy | less --tabs=4 -RF -+X
+[init]
+	defaultBranch = main
