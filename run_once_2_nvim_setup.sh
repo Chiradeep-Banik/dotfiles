@@ -21,7 +21,7 @@ nvim_setup() {
 
     git clone --depth=1 https://github.com/neovim/neovim /tmp/neovim
     cd /tmp/neovim && make -j 4 CMAKE_BUILD_TYPE=RelWithDebInfo
-    cd build && cpack -G DEB && $useSudo sudo dpkg -i nvim-linux64.deb
+    cd build && cpack -G DEB && $useSudo dpkg -i nvim-linux64.deb
     
     if [[ $? -eq 0 ]]; then
         echo "NVIM installed"
