@@ -31,4 +31,4 @@ nvim_setup() {
 
 updg $useSudo
 
-nvim_setupi $useSudo
+nvim_setup $useSudo
