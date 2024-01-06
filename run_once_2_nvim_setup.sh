@@ -18,7 +18,7 @@ updg() {
 
 nvim_setup() {
     git clone --depth=1 https://github.com/neovim/neovim /tmp/neovim
-    cd /temp/neovim && make -j 4 CMAKE_BUILD_TYPE=RelWithDebInfo
+    cd /tmp/neovim && make -j 4 CMAKE_BUILD_TYPE=RelWithDebInfo
     cd build && cpack -G DEB && sudo dpkg -i nvim-linux64.deb
     
     if [[ $? -eq 0 ]]; then
