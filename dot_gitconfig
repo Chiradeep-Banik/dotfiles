@@ -2,7 +2,7 @@
 	email = chiradeep13@gmail.com
 	name = Banik
 [core]
-	editor = vim
+	editor = nvim
 	autocrlf = input
 	pager = diff-so-fancy | less --tabs=4 -RF -+X
 [init]
