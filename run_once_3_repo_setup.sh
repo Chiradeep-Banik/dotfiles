@@ -44,7 +44,7 @@ add_google_chrome_repository() {
             fi
             ;;
         [nN]|[nN][oO])
-            echo "Okk.. Not installing docker"
+            echo "Okk.. Not installing Google-Chome-stable"
             ;;
         *)
             echo "Invalid response. Please enter 'y' for Yes or 'n' for No."
