@@ -1,3 +1,5 @@
+-- Plugin to convert ant line into comments
+
 return {
 	"numToStr/Comment.nvim",
 	opts = {
@@ -7,7 +9,7 @@ return {
 			---Line-comment toggle keymap
 			line = "gcc",
 			---Block-comment toggle keymap
-			block = "gbc",
+			block = "gbc"
 		},
 		mappings = {
 			basic = true,
