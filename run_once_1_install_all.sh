@@ -21,7 +21,7 @@ updg $useSudo
 $useSudo apt-get install -y cmake build-essential \
 	git curl wget \
 	apt-utils gettext \
-	bat > /dev/null
+	bat exa > /dev/null
 
 if [ $? -eq 0 ]; then
     echo "Installed successfully"

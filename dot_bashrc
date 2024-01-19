@@ -88,7 +88,7 @@ fi
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -lah'
+# alias ll='ls -lah'
 alias python='python3'
 alias d='du -h -d 1'
 alias update='sudo apt update'
@@ -96,7 +96,6 @@ alias upgrade='sudo apt full-upgrade'
 alias updg='update && upgrade -y && autoremove && autoclean'
 alias remove='sudo apt purge --autoremove'
 alias install='sudo apt install'
-alias rg='ranger'
 alias shutdown='sudo systemctl poweroff'
 alias restart='sudo systemctl reboot'
 alias code='code-insiders'
@@ -106,6 +105,8 @@ alias autoclean='sudo apt autoclean'
 alias cp='cp -v'
 alias mkdir='mkdir -v'
 alias cat='batcat'
+alias ll='exa -lah'
+alias ll2='exa --tree --level=2 -lah'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
