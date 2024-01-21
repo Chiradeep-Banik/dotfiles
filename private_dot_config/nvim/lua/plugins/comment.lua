@@ -7,9 +7,13 @@ return {
 		ignore = nil,
 		toggler = {
 			---Line-comment toggle keymap
-			line = "gcc",
-			---Block-comment toggle keymap
-			block = "gbc"
+			line = "<C-_>",
+		},
+		opleader = {
+			---Line-comment keymap
+			line = "<C-_>",
+			---Block-comment keymap
+			block = "gb",
 		},
 		mappings = {
 			basic = true,

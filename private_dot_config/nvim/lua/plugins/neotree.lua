@@ -10,6 +10,6 @@ return {
 	config = function()
 		-- Neo-Tree Keymaps
 		vim.keymap.set("n", "<C-a>", ":Neotree filesystem toggle left<CR>", { desc = "[a] Open Neotree" })
+		vim.keymap.set("n", "<leader>a", ":Neotree focus<CR>", { desc = "[a] Change the focus back to Neotree" })
 	end,
-
 }
