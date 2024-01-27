@@ -1,0 +1,57 @@
+[window]
+dimensions = { columns = 511, lines = 511 }
+padding = { x = 5, y = 5 }
+decorations = "Full"
+decorations_theme_variant = "Dark"
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font Mono", style = "Regular" }
+bold = { family = "JetBrainsMono Nerd Font Mono", style = "Bold" }
+italic = { family = "JetBrainsMono Nerd Font Mono", style = "Italic" }
+bold_italic= { family = "JetBrainsMono Nerd Font Mono", style = "Bold Italic" }
+size=12
+
+[selection]
+save_to_clipboard = true
+
+[cursor]
+style = { shape="Beam", blinking="On" }
+
+[keyboard]
+bindings = [
+	{ key = "C", mods = "Control", action = "Copy" },
+	{ key = "V", mods = "Control", action = "Paste" },
+	{ key = "C", mods = "Control|Shift", chars = '\x03'},
+
+]
+
+[colors]
+  [colors.primary]
+  background = "#1d1f21"
+  foreground = "#c5c8c6"
+
+  [colors.cursor]
+  text = "#1d1f21"
+  cursor = "#c5c8c6"
+
+  [colors.normal]
+  black = "#1d1f21"
+  red = "#cc342b"
+  green = "#198844"
+  yellow = "#fba922"
+  blue = "#3971ed"
+  magenta = "#a36ac7"
+  cyan = "#3971ed"
+  white = "#c5c8c6"
+
+  [colors.bright]
+  black = "#969896"
+  red = "#cc342b"
+  green = "#198844"
+  yellow = "#fba922"
+  blue = "#3971ed"
+  magenta = "#a36ac7"
+  cyan = "#3971ed"
+  white = "#ffffff"
+
+
