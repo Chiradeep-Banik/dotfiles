@@ -29,7 +29,7 @@ return {
 			cmdline = {
 				enabled = true, -- enables the Noice cmdline UI
 				view = "cmdline", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
-			format = {
+				format = {
 					-- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
 					-- view: (default is cmdline view)
 					-- opts: any options passed to the view

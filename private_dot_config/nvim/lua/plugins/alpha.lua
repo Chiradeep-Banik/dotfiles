@@ -1,4 +1,4 @@
---[[ 
+--[[
 	Plugin to modify the home screen
 ]]
 return {

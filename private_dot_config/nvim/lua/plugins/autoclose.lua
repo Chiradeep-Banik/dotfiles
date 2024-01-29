@@ -1,4 +1,4 @@
--- Plugin to automatically close brackets 
+-- Plugin to automatically close brackets
 
 return {
 	"m4xshen/autoclose.nvim",
