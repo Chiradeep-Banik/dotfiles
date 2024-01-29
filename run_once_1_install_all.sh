@@ -6,6 +6,9 @@ if [ "$(id -u)" -eq 0 ]; then
     useSudo=''
 fi
 
+
+
+
 updg() {
     local useSudo=$1
 

@@ -61,6 +61,7 @@ alias mkdir='mkdir -v'
 alias cat='bat'
 alias ll='exa -lah --icons'
 alias ll2='exa --tree --level=2 -lah'
+alias rm='trash'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
