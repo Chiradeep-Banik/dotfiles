@@ -21,8 +21,8 @@ style = { shape="Beam", blinking="On" }
 bindings = [
 	{ key = "C", mods = "Control", action = "Copy" },
 	{ key = "V", mods = "Control", action = "Paste" },
-	{ key = "C", mods = "Control|Shift", chars = '\x03'},
-
+  	{ key = "W", mods = "Control", action = "Quit"},
+  	{ key = "Return", mods = "Control|Shift", action = "SpawnNewInstance" }
 ]
 
 [colors]
