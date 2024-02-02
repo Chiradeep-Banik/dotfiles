@@ -1,60 +1,166 @@
 #!/bin/sh
 
-useSudo='sudo'
+# Determine package manager
+read -p "Choose package manager (apt/pacman): " packageManager
 
+# Set sudo command based on user choice
+if [ "$packageManager" = "apt" ]; then
+    useSudo='sudo'
+elif [ "$packageManager" = "pacman" ]; then
+    useSudo='sudo'
+else
+    echo "Invalid package manager choice. Exiting."
+    exit 1
+fi
+
+# Check if running as root
 if [ "$(id -u)" -eq 0 ]; then
     useSudo=''
 fi
 
+build_pikaur() {
+    local useSudo=$1
+
+    if [ "$packageManager" = "pacman" ]; then
+        # Clone pikaur repository
+        git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur
+
+        # Build and install pikaur
+        cd /tmp/pikaur
+        makepkg -si --noconfirm
+
+        if [ $? -eq 0 ]; then
+            echo "Pikaur installed"
+        else
+            echo "Failed to install Pikaur"
+        fi
+    fi
+}
+
+# Function to update and upgrade using the chosen package manager
 updg() {
     local useSudo=$1
 
-    $useSudo apt-get update >/dev/null && $useSudo apt-get upgrade -y >/dev/null;
+    if [ "$packageManager" = "apt" ]; then
+        $useSudo "$packageManager"-get update && $useSudo "$packageManager"-get upgrade -y
+    elif [ "$packageManager" = "pacman" ]; then
+        $useSudo "$packageManager" -Syu
+    fi
+    
     if [ $? -eq 0 ]; then
         echo "Update Done"
     fi
     return $?
 }
 
-add_google_chrome_repository() {
+install_google_chrome() {
     local useSudo=$1
-    $useSudo curl -fSsL https://dl.google.com/linux/linux_signing_key.pub | $useSudo gpg --dearmor | $useSudo tee /usr/share/keyrings/google-chrome.gpg >> /dev/null
 
-    $useSudo echo deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main | $useSudo tee /etc/apt/sources.list.d/google-chrome.list
-
-    if [ $? -eq 0 ]; then
-        echo "Added Google Chrome repository"
-    else
-        echo "Failed to add Google Chrome repository"
-    fi
-
-    updg $useSudo
-    local question="Install Google Chrome "
-
+    # Ask user if they want to install Google Chrome
+    local question="Install Google Chrome"
     read -p "$question (y/n): " response
 
     # Check the user's response
     case "$response" in
         [yY]|[yY][eE][sS])
-            $useSudo apt-get install -y google-chrome-stable > /dev/null
-            if [ $? -eq 0 ]; then
-                echo "Installed google-chrome-stable"
-            else
-                echo "Failed to install google-chrome-stable"
+            if [ "$packageManager" = "apt" ]; then
+                $useSudo curl -fSsL https://dl.google.com/linux/linux_signing_key.pub | $useSudo gpg --dearmor | $useSudo tee /usr/share/keyrings/google-chrome.gpg >> /dev/null
+
+                $useSudo echo deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main | $useSudo tee /etc/apt/sources.list.d/google-chrome.list
+
+                if [ $? -eq 0 ]; then
+                    echo "Added Google Chrome repository"
+                else
+                    echo "Failed to add Google Chrome repository"
+                fi
+
+                updg $useSudo
+                local question="Install Google Chrome "
+
+                read -p "$question (y/n): " response
+
+                # Check the user's response
+                case "$response" in
+                    [yY]|[yY][eE][sS])
+                        $useSudo apt-get install -y google-chrome-stable > /dev/null
+                        if [ $? -eq 0 ]; then
+                            echo "Installed Google Chrome"
+                        else
+                            echo "Failed to install Google Chrome"
+                        fi
+                        ;;
+                    [nN]|[nN][oO])
+                        echo "Skipping installation of Google Chrome"
+                        ;;
+                    *)
+                        echo "Invalid response. Please enter 'y' for Yes or 'n' for No."
+                        ;;
+                esac
+            elif [ "$packageManager" = "pacman" ]; then
+                $useSudo pikaur -S --noconfirm google-chrome
+
+                if [ $? -eq 0 ]; then
+                    echo "Installed Google Chrome"
+                else
+                    echo "Failed to install Google Chrome"
+                fi
             fi
             ;;
         [nN]|[nN][oO])
-            echo "Okk.. Not installing Google-Chome-stable"
+            echo "Skipping installation of Google Chrome"
             ;;
         *)
             echo "Invalid response. Please enter 'y' for Yes or 'n' for No."
             ;;
     esac
-
-    return $?
 }
 
-ask_to_install_docker() {
+
+install_vscode() {
+    local useSudo=$1
+
+    # Ask user if they want to install VSCode
+    local question="Install VSCode"
+    read -p "$question (y/n): " response
+
+    # Check the user's response
+    case "$response" in
+        [yY]|[yY][eE][sS])
+            if [ "$packageManager" = "apt" ]; then
+                $useSudo apt-get install -y wget gpg > /dev/null
+                wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+                $useSudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+                $useSudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+                rm -f packages.microsoft.gpg
+                updg $useSudo
+                if [ $? -eq 0 ]; then
+                    echo "Added vscode repository"
+                else
+                    echo "Failed to add vscode repository"
+                fi
+                $useSudo apt-get install -y apt-transport-https > /dev/null
+                $useSudo apt-get install -y code > /dev/null
+            elif [ "$packageManager" = "pacman" ]; then
+                $useSudo pikaur -S --noconfirm visual-studio-code-bin
+            fi
+
+            if [ $? -eq 0 ]; then
+                echo "Installed VSCode"
+            else
+                echo "Failed to install VSCode"
+            fi
+            ;;
+        [nN]|[nN][oO])
+            echo "Skipping installation of VSCode"
+            ;;
+        *)
+            echo "Invalid response. Please enter 'y' for Yes or 'n' for No."
+            ;;
+    esac
+}
+
+
+install_docker() {
     local question="Install Docker"
     local useSudo=$1
 
@@ -63,18 +169,22 @@ ask_to_install_docker() {
     # Check the user's response
     case "$response" in
         [yY]|[yY][eE][sS])
-            curl -fsSL https://get.docker.com -o get-docker.sh
-            $useSudo chmod +x get-docker.sh
-            $useSudo ./get-docker.sh
-            $useSudo rm -f get-docker.sh
+            if [ "$packageManager" = "apt" ]; then
+                curl -fsSL https://get.docker.com -o get-docker.sh
+                $useSudo chmod +x get-docker.sh
+                $useSudo ./get-docker.sh
+                $useSudo rm -f get-docker.sh
+            elif [ "$packageManager" = "pacman" ]; then
+                $useSudo pacman -S --noconfirm docker
+            fi
             if [ $? -eq 0 ]; then
                 echo "Installed Docker"
             else
-                echo "Failed to install docker"
+                echo "Failed to install Docker"
             fi
             ;;
         [nN]|[nN][oO])
-            echo "Okk.. Not installing docker"
+            echo "Okk.. Not installing Docker"
             ;;
         *)
             echo "Invalid response. Please enter 'y' for Yes or 'n' for No."
@@ -82,51 +192,16 @@ ask_to_install_docker() {
     esac
 }
 
-add_vscode_repository() {
-    local useSudo=$1
-    $useSudo apt-get install -y wget gpg > /dev/null
-    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-    $useSudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-    $useSudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-    rm -f packages.microsoft.gpg
-    
-    updg $useSudo
 
-    if [ $? -eq 0 ]; then
-        echo "Added vscode repository"
-    else
-        echo "Failed to add vscode repository"
-    fi
 
-    local question="Install Vscode "
-    read -p "$question (y/n): " response
+# Check if it is a Docker environment
+read -p "Is it a Docker environment? (y/n): " dockerEnvironment
 
-    # Check the user's response
-    case "$response" in
-        [yY]|[yY][eE][sS])
-            $useSudo apt-get install -y apt-transport-https > /dev/null
-            $useSudo apt-get install -y code-insiders > /dev/null
-            if [ $? -eq 0 ]; then
-                echo "Installed vscode"
-            else
-                echo "Failed to install vscode"
-            fi
-            ;;
-        [nN]|[nN][oO])
-            echo "Okk...Not installing vscode"
-            ;;
-        *)
-            echo "Invalid response. Please enter 'y' for Yes or 'n' for No."
-            ;;
-    esac
-
-    updg $useSudo
-
-    return $?
-}
-
-add_google_chrome_repository "$useSudo"
-
-add_vscode_repository "$useSudo"
-
-ask_to_install_docker "$useSudo"
+if [ "$dockerEnvironment" = "y" ]; then
+    echo "Running in a Docker environment. Skipping user prompts."
+else
+    build_pikaur "$useSudo"
+    install_google_chrome "$useSudo"
+    install_vscode "$useSudo"
+    install_docker "$useSudo"
+fi
