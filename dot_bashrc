@@ -62,6 +62,7 @@ alias cat='bat'
 alias ll='exa -lah --icons'
 alias ll2='exa --tree --level=2 -lah'
 alias rm='trash'
+#alias cd='z'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -87,6 +88,10 @@ fi
 stty werase \^H
 
 export EDITOR=nvim
+
+#Zoxide Initialization
+eval "$(zoxide init --cmd cd bash)"
+
 
 # gets the name of the git branch in a git directory
 git_branch() {
