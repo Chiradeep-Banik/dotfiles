@@ -42,11 +42,11 @@ if [ "$packageManager" = "apt" ]; then
     $useSudo "$packageManager"-get install -y cmake build-essential \
         git curl wget \
         apt-utils gettext file \
-        bat exa
+        bat exa zoxide
 elif [ "$packageManager" = "pacman" ]; then
     $useSudo "$packageManager" -S --noconfirm base-devel \
         git curl wget \
-        bat exa
+        bat exa zoxide
 fi
 
 # Check if installation was successful
