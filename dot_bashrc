@@ -63,6 +63,11 @@ alias ll='exa -lah --icons'
 alias ll2='exa --tree --level=2 -lah'
 alias rm='trash'
 #alias cd='z'
+alias up='sudo pacman -Suuyy --noconfirm && \
+	sudo pacman -Scccc --noconfirm && \
+	sudo pikaur -Suuyy --noconfirm && \
+	sudo pikaur -Scccc --noconfirm
+	'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
