@@ -68,6 +68,7 @@ alias up='sudo pacman -Suuyy --noconfirm && \
 	sudo pikaur -Suuyy --noconfirm && \
 	sudo pikaur -Scccc --noconfirm
 	'
+alias npm='pnpm'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -104,3 +105,11 @@ git_branch() {
 }
 
 PS1="\[\e[1;32m\](\T) \[\e[1;31m\]($(whoami)) \e[1;36m\]\w \[\e[36m\]\[\e[1;33m\]\$(git_branch)\n   \[\e[1;31m\]|-->>\[\e[0m\] "
+
+# pnpm
+export PNPM_HOME="/home/banik/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
