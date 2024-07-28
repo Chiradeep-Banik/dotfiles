@@ -6,8 +6,6 @@ return {
 			sources = {
 				null_ls.builtins.formatting.stylua,
 				null_ls.builtins.formatting.prettier,
-				null_ls.builtins.formatting.pyright,
-				null_ls.builtins.formatting.beautysh,
 			},
 		})
 
