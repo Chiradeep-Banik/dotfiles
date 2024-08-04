@@ -49,6 +49,9 @@ elif [ "$packageManager" = "pacman" ]; then
         bat exa zoxide
 fi
 
+# Add the smartcam executable to binary for droidcam setup
+$useSudo cp /home/banik/.config/smartcam/smartcam /usr/local/bin/.
+
 # Check if installation was successful
 if [ $? -eq 0 ]; then
     echo "Installed successfully"
