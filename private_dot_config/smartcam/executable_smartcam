@@ -1,0 +1,23 @@
+#!/bin/bash
+if ! command -v adb &> /dev/null
+then
+    echo "adb is not installed!"
+    exit
+fi
+
+if ! command -v ffmpeg &> /dev/null
+then
+    echo "ffmpeg is not installed!"
+    exit
+fi
+
+echo "waiting for the device to show up via adb"
+adb wait-for-usb-device
+
+adb forward tcp:4747 tcp:4747
+
+sudo modprobe v4l2loopback devices=1 max_buffers=2 exclusive_caps=1 video_nr=7 'card_label=Smartphone'
+
+ffmpeg -i "http://192.168.29.141:4747/video?640x480" -c:v copy -f v4l2 /dev/video7
+
+# $SUDO modprobe -r v4l2loopback
