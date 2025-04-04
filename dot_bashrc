@@ -65,10 +65,11 @@ alias rm='trash'
 #alias cd='z'
 alias up='sudo pacman -Suuyy --noconfirm && \
 	sudo pacman -Scccc --noconfirm && \
-	sudo pikaur -Suuyy --noconfirm && \
-	sudo pikaur -Scccc --noconfirm
+	yay -Suuyy --noconfirm && \
+	yay -Scccc --noconfirm
 	'
 alias npm='pnpm'
+alias ac='source venv/bin/activate'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -113,3 +114,4 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
