@@ -70,6 +70,7 @@ alias up='sudo pacman -Suuyy --noconfirm && \
 	'
 alias npm='pnpm'
 alias ac='source venv/bin/activate'
+alias zd="zellij attach dev"
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
