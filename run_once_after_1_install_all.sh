@@ -23,11 +23,11 @@ updg() {
     local useSudo=$1
 
     if [ "$packageManager" = "apt" ]; then
-        $useSudo "$packageManager"-get update && $useSudo "$packageManager"-get upgrade -y
+        $useSudo "apt-get" update && $useSudo "apt-get" upgrade -y
     elif [ "$packageManager" = "pacman" ]; then
-        $useSudo "$packageManager" -Syu
+        $useSudo "pacman" -Syu
     fi
-    
+
     if [ $? -eq 0 ]; then
         echo "Update Done"
     fi
@@ -37,20 +37,27 @@ updg() {
 # Run update function with chosen package manager
 updg $useSudo
 
-# # Install necessary packages
+# Install necessary packages
 if [ "$packageManager" = "apt" ]; then
-    $useSudo "$packageManager"-get install -y cmake build-essential \
+    echo "Installing packages for Debian-based system..."
+    $useSudo "apt-get" install -y cmake build-essential \
         git curl wget \
         apt-utils gettext file \
         bat exa zoxide
 elif [ "$packageManager" = "pacman" ]; then
-    $useSudo "$packageManager" -S --noconfirm base-devel \
+    echo "Installing packages for Arch-based system..."
+    $useSudo "pacman" -S --noconfirm base-devel \
         git curl wget \
         bat exa zoxide
 fi
 
 # Add the smartcam executable to binary for droidcam setup
-$useSudo cp /home/banik/.config/smartcam/smartcam /usr/local/bin/.
+if [ -f /home/banik/.config/smartcam/smartcam ]; then
+    echo "Copying smartcam executable..."
+    $useSudo cp /home/banik/.config/smartcam/smartcam /usr/local/bin/.
+else
+    echo "Warning: smartcam executable not found at /home/banik/.config/smartcam/smartcam"
+fi
 
 # Check if installation was successful
 if [ $? -eq 0 ]; then

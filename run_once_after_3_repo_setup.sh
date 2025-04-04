@@ -18,21 +18,47 @@ if [ "$(id -u)" -eq 0 ]; then
     useSudo=''
 fi
 
-build_pikaur() {
+build_yay() {
     local useSudo=$1
 
     if [ "$packageManager" = "pacman" ]; then
-        # Clone pikaur repository
-        git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur
+        # Check if yay is already installed
+        if command -v yay &> /dev/null; then
+            echo "Yay is already installed."
+            return 0
+        fi
 
-        # Build and install pikaur
-        cd /tmp/pikaur
+        # Install git if not already installed
+        if ! command -v git &> /dev/null; then
+            echo "Git is not installed. Installing..."
+            $useSudo pacman -S --noconfirm git
+            if [ $? -ne 0 ]; then
+                echo "Failed to install git. Cannot install yay."
+                return 1
+            fi
+        fi
+
+        # Install base-devel if not already installed (recommended for AUR builds)
+        if ! pacman -Qg base-devel > /dev/null; then
+            echo "base-devel is not installed. Installing..."
+            $useSudo pacman -S --noconfirm base-devel
+            if [ $? -ne 0 ]; then
+                echo "Failed to install base-devel. Cannot install yay."
+                return 1
+            fi
+        fi
+
+        # Clone yay repository
+        git clone https://aur.archlinux.org/yay.git /tmp/yay
+
+        # Build and install yay
+        cd /tmp/yay
         makepkg -si --noconfirm
 
         if [ $? -eq 0 ]; then
-            echo "Pikaur installed"
+            echo "Yay installed"
         else
-            echo "Failed to install Pikaur"
+            echo "Failed to install Yay"
         fi
     fi
 }
@@ -46,7 +72,7 @@ updg() {
     elif [ "$packageManager" = "pacman" ]; then
         $useSudo "$packageManager" -Syu
     fi
-    
+
     if [ $? -eq 0 ]; then
         echo "Update Done"
     fi
@@ -97,7 +123,7 @@ install_google_chrome() {
                         ;;
                 esac
             elif [ "$packageManager" = "pacman" ]; then
-                $useSudo pikaur -S --noconfirm google-chrome
+                $useSudo yay -S --noconfirm google-chrome
 
                 if [ $? -eq 0 ]; then
                     echo "Installed Google Chrome"
@@ -141,7 +167,7 @@ install_vscode() {
                 $useSudo apt-get install -y apt-transport-https > /dev/null
                 $useSudo apt-get install -y code > /dev/null
             elif [ "$packageManager" = "pacman" ]; then
-                $useSudo pikaur -S --noconfirm visual-studio-code-bin
+                $useSudo yay -S --noconfirm visual-studio-code-bin
             fi
 
             if [ $? -eq 0 ]; then
@@ -198,9 +224,9 @@ install_docker() {
 read -p "Is it a Docker environment? (y/n): " dockerEnvironment
 
 if [ "$dockerEnvironment" = "y" ]; then
-    echo "Running in a Docker environment. Skipping user prompts."
+    echo "Running in a Docker environment. Skipping user prompts for yay, Chrome, VSCode, and Docker."
 else
-    build_pikaur "$useSudo"
+    build_yay "$useSudo"
     install_google_chrome "$useSudo"
     install_vscode "$useSudo"
     install_docker "$useSudo"
