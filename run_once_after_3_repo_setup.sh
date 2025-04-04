@@ -218,16 +218,80 @@ install_docker() {
     esac
 }
 
+install_zellij() {
+    local question="Install Zellij"
+    local useSudo=$1
+
+    read -p "$question (y/n): " response
+
+    case "$response" in
+        [yY]|[yY][eE][sS])
+            if [ "$packageManager" = "apt" ]; then
+                $useSudo apt-get install -y zellij
+                if [ $? -eq 0 ]; then
+                    echo "Installed Zellij"
+                else
+                    echo "Failed to install Zellij"
+                fi
+            elif [ "$packageManager" = "pacman" ]; then
+                $useSudo yay -S --noconfirm zellij-git
+                if [ $? -eq 0 ]; then
+                    echo "Installed Zellij"
+                else
+                    echo "Failed to install Zellij"
+                fi
+            fi
+            ;;
+        [nN]|[nN][oO])
+            echo "Skipping installation of Zellij"
+            ;;
+        *)
+            echo "Invalid response. Please enter 'y' for Yes or 'n' for No."
+            ;;
+    esac
+}
+
+install_brave_beta() {
+    local question="Install Brave Browser (Beta from AUR)"
+    local useSudo=$1
+
+    read -p "$question (y/n): " response
+
+    case "$response" in
+        [yY]|[yY][eE][sS])
+            if [ "$packageManager" = "apt" ]; then
+                echo "Brave Browser Beta (brave-beta-bin) is typically installed from the AUR on Arch-based systems."
+                echo "It is not directly available through apt."
+                echo "You might need to add a third-party repository or download a .deb package if available."
+            elif [ "$packageManager" = "pacman" ]; then
+                $useSudo yay -S --noconfirm brave-beta-bin
+                if [ $? -eq 0 ]; then
+                    echo "Installed Brave Browser Beta"
+                else
+                    echo "Failed to install Brave Browser Beta"
+                fi
+            fi
+            ;;
+        [nN]|[nN][oO])
+            echo "Skipping installation of Brave Browser Beta"
+            ;;
+        *)
+            echo "Invalid response. Please enter 'y' for Yes or 'n' for No."
+            ;;
+    esac
+}
 
 
 # Check if it is a Docker environment
 read -p "Is it a Docker environment? (y/n): " dockerEnvironment
 
 if [ "$dockerEnvironment" = "y" ]; then
-    echo "Running in a Docker environment. Skipping user prompts for yay, Chrome, VSCode, and Docker."
+    echo "Running in a Docker environment. Skipping user prompts for yay, Chrome, VSCode, Docker, and Brave Beta."
 else
     build_yay "$useSudo"
     install_google_chrome "$useSudo"
     install_vscode "$useSudo"
     install_docker "$useSudo"
+    install_zellij "$useSudo"
+    install_brave_beta "$useSudo"
 fi
