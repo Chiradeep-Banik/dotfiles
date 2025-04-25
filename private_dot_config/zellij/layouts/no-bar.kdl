@@ -1,0 +1,9 @@
+layout {
+  pane
+}
+
+ui {
+  hide_status_bar true
+  hide_tab_bar false
+}
+
