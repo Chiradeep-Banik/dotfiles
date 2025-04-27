@@ -55,7 +55,7 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 alias python='python3'
 alias d='du -h -d 1'
 alias code='code-insiders'
-alias cod='code-insiders .;exit;'
+alias cod='code-insiders .;'
 alias cp='cp -v'
 alias mkdir='mkdir -v'
 alias cat='bat'
@@ -63,9 +63,9 @@ alias ll='exa -lah --icons'
 alias ll2='exa --tree --level=2 -lah'
 alias rm='trash'
 #alias cd='z'
-alias up='sudo pacman -Suuyy --noconfirm -overwrite '*' && \
+alias up='sudo pacman -Suuyy --noconfirm && \
 	sudo pacman -Scccc --noconfirm && \
-	yay -Suuyy --noconfirm -overwrite '*' && \
+	yay -Suuyy --noconfirm && \
 	yay -Scccc --noconfirm
 	'
 alias npm='pnpm'
